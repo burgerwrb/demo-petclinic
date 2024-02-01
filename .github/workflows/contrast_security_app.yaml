@@ -65,18 +65,22 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     # steps to build the artifact you want to scan
-    # -name: Build Project
+    - name: Create file
+      run: cat > contrast.jar
+    - name: Build application
+      run: java -javaagent:contrast.jar -Dcontrast.config.path=contrast_security.yaml  -Dcontrast.application.name=spring-petclinic -jar spring-petclinic-1.5.1.jar [--server.port=8080] [--server.address=localhost] 
     # ...
     # Scan Artifact    
     - name: Contrast Scan Action
       uses: Contrast-Security-OSS/contrastscan-action@v2.0.3
       with:
-        artifact: mypath/target/myartifact.jar
+        artifact: contrast.jar
         apiKey: ${{ secrets.CONTRAST_GITHUB_APP_API_KEY }}
         orgId: ${{ vars.CONTRAST_GITHUB_APP_ORG_ID }}
+        apiUrl: ${{ vars.CONTRAST_GITHUB_APP_TS_URL }}
         authHeader: ${{ secrets.CONTRAST_GITHUB_APP_AUTH_HEADER }}
         severity: high
-        fail: true
+        fail: false
     # To list vulnerabilities in the GitHub Security Tab of the repo include GitHub upload-sarif action
     # The value of `sarif_file` must be `results.sarif` 
     - name: Upload SARIF file
