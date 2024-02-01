@@ -1,6 +1,7 @@
 # Spring PetClinic: A deliberately insecure Java web application
 
 This sample application is based on https://github.com/Contrast-Security-OSS/spring-petclinic
+[Test commit]
 
 **Warning**: The computer running this application will be vulnerable to attacks, please take appropriate precautions.
 
